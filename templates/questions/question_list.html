@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block content %}
+
+<h2 class="text-2xl font-bold">Questions</h2>
+<p class="text-base-content/70 mb-4">
+  Here are some questions from our community. Feel free to explore and
+  contribute!
+</p>
+{% if questions %}
+<ul>
+  {% for question in questions %}
+  <li class="flex flex-col gap-2 mb-4 group">
+    <a href="{{ question.get_absolute_url }}">
+      <h2 class="text-xl group-hover:underline">{{ question.title }}</h2>
+      <p class="text-base-content/70">{{ question.body |truncatewords:30 }}</p>
+      <div class="flex items-center gap-2 mt-1">
+        <p class="text-base-content/70">
+          Asked by <b>{{ question.author.username }}</b>
+        </p>
+        <small class="text-base-content/50"
+          ><time>{{ question.created_at }}</time></small
+        >
+      </div>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No questions available.</p>
+{% endif %} {%endblock%}

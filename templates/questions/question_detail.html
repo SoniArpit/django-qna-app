@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block content %}
+<section>
+  <h1 class="text-3xl font-bold">{{ question.title }}</h1>
+  <p class="text-base-content/70 mb-4">{{ question.body }}</p>
+
+  <small class="text-base-content/50"
+    ><time>{{ question.created_at }}</time></small
+  >
+  <p class="text-base-content/70">
+    Asked by <b>{{ question.author.username }}</b>
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<section class="mt-6">
+  <h2 class="text-2xl font-bold">Answers</h2>
+  {% if answers %}
+  <ul>
+    {% for answer in answers %}
+    <li>
+      <p>{{ answer.body }}</p>
+      <small><time>{{ answer.created_at }}</time></small>
+      <p>Answered by {{ answer.user.username }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+
+  <div class="mt-5">
+    <h2>Submit an Answer</h2>
+
+    {% if user.is_authenticated %} {% comment %}
+    <form method="POST" action="{% url 'answer:submit_answer' question.id %}">
+      {% csrf_token %} {{ answer_form.as_p }}
+      <button type="submit">Submit Answer</button>
+    </form>
+    {% endcomment %} {% else %}
+    <p>You must be logged in to submit an answer.</p>
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+  </div>
+
+  <div class="divider"></div>
+  <div class="my-5 text-center">
+    <strong>No answers available.</strong>
+    <p>Be the first to answer this question!</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

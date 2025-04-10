@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Q and A</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body data-theme="dracula" class="h-[100%] mx-auto mb-4">
+    <header class="navbar bg-base-300 mb-6">
+      <div
+        class="max-w-4xl mx-auto w-full flex justify-between items-center px-4"
+      >
+        <h1>
+          <a href="{% url 'questions:home' %}" class="text-2xl"> Q and A </a>
+        </h1>
+        <div class="flex items-center gap-4">
+          <button class="btn btn-primary btn-sm">
+            <a href="{% url 'questions:ask_question' %}">Ask a Question</a>
+          </button>
+          <div>
+            {% if user.is_authenticated %} Hi,
+            <b>{{ user.username }}</b> |
+            <a href="{% url 'logout' %}">Logout</a>
+            {% elif user.is_anonymous %}
+            <a href="{% url 'login' %}">Login</a> |
+            <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="min-h-screen max-w-4xl mx-auto px-4">
+      {% block content %} {% endblock %}
+    </main>
+    <footer
+      class="footer footer-center p-10 bg-base-200 text-base-content overflow-hidden mx-auto my-0"
+    >
+      <p>&copy; 2025 Q and A</p>
+    </footer>
+  </body>
+</html>
