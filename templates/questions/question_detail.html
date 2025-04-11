@@ -1,4 +1,8 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block title %}{{ question.title }} - {% endblock title %}
+
+{% block content %}
+
 <section>
   <h1 class="text-3xl font-bold">{{ question.title }}</h1>
   <p class="text-base-content/70 my-4">{{ question.body }}</p>

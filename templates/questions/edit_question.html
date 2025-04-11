@@ -1,4 +1,7 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block title %}Edit {{ question.title }} - {% endblock title %}
+
+{% block content %}
 <h1 class="text-2xl font-bold text-center">Edit Question</h1>
 <form method="POST" action="{% url 'questions:edit_question' question.slug %}">
   {% csrf_token %} {{ form.as_p }}
