@@ -1,13 +1,13 @@
 <div class="join my-5">
   {% if page.has_previous %}
-  <a href="?page=1" class="join-item btn">&laquo; first</a>
-  <a href="?page={{ page.previous_page_number }}" class="join-item btn"
+  <a href="?page=1" class="join-item btn btn-sm">&laquo; first</a>
+  <a href="?page={{ page.previous_page_number }}" class="join-item btn btn-sm"
     >previous</a
   >
   {% else %}
 
-  <a class="join-item btn btn-disabled">&laquo; first</a>
-  <a class="join-item btn btn-disabled">previous</a>
+  <a class="join-item btn btn-disabled btn-sm">&laquo; first</a>
+  <a class="join-item btn btn-disabled btn-sm">previous</a>
   {% endif %}
 
   <span class="join-item flex items-center px-2">
@@ -15,12 +15,14 @@
   </span>
 
   {% if page.has_next %}
-  <a href="?page={{ page.next_page_number }}" class="join-item btn">next</a>
-  <a href="?page={{ page.paginator.num_pages }}" class="join-item btn"
+  <a href="?page={{ page.next_page_number }}" class="join-item btn btn-sm"
+    >next</a
+  >
+  <a href="?page={{ page.paginator.num_pages }}" class="join-item btn btn-sm"
     >last &raquo;</a
   >
   {% else %}
-  <a class="join-item btn btn-disabled">next</a>
-  <a class="join-item btn btn-disabled">last &raquo;</a>
+  <a class="join-item btn btn-disabled btn-sm">next</a>
+  <a class="join-item btn btn-disabled btn-sm">last &raquo;</a>
   {% endif %}
 </div>
