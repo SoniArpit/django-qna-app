@@ -68,3 +68,31 @@ def question_detail(request, slug):
     except EmptyPage:
         answers = paginator.page(paginator.num_pages)
     return render(request, 'questions/question_detail.html', {'question': question, 'answer_form': answer_form, 'answers': answers})
+
+
+@login_required
+def edit_question(request, slug):
+    question = get_object_or_404(Question, slug=slug)
+    if request.user != question.author:
+        return redirect('questions:question_detail', slug=slug)
+    
+    if request.method == 'POST':
+        form = QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.slug = slugify(form.cleaned_data['title'])
+            question.save()
+            return redirect(question.get_absolute_url())
+    else:
+        form = QuestionForm(instance=question)
+    return render(request, 'questions/edit_question.html', {'form': form, 'question': question})
+
+
+@login_required
+def delete_question(request, slug):
+    question = get_object_or_404(Question, slug=slug)
+    if request.user == question.author:
+        question.delete()
+        return redirect('questions:home')
+    else:
+        return redirect('questions:question_detail', slug=slug)
