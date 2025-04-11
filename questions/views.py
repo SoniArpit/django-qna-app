@@ -7,6 +7,9 @@ from django.utils.text import slugify
 import random
 import string
 from answers.forms import AnswerForm
+from answers.models import AnswerLike
+from django.db import models
+from django.db.models import Exists, OuterRef
 
 @login_required
 def ask_question(request):
@@ -41,6 +44,20 @@ def question_detail(request, slug):
     question = get_object_or_404(Question, slug=slug)
     answer_form = AnswerForm()
     answers = question.answers.all().order_by('-created_at')
+    # Annotate each answer with whether the current user has liked it
+    if request.user.is_authenticated:
+        likes_subquery = AnswerLike.objects.filter(
+            user = request.user,
+            answer = OuterRef('pk')
+        )
+        answers = answers.annotate(
+            has_liked=Exists(likes_subquery)
+        )
+    else:
+        answers = answers.annotate(
+           has_liked=models.Value(False, output_field=models.BooleanField())
+        )
+
     # paginator for answers
     page = request.GET.get('page', 1)
     paginator = Paginator(answers, 10)  # Show 10 answers per page

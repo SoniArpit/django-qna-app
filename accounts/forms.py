@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 
 class RegisterForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(required=True, label='Email')
 
     class Meta:
         model = User
@@ -15,7 +15,7 @@ class RegisterForm(UserCreationForm):
         for _, field in self.fields.items():
             field.widget.attrs.update({
                 'class': 'input w-full mb-4 mt-2',
-                'placeholder': field.label  # Optional: show label as placeholder
+                'placeholder': field.label 
             })
 
 
