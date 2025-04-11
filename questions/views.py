@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils.text import slugify
 import random
 import string
+from answers.forms import AnswerForm
 
 @login_required
 def ask_question(request):
@@ -38,4 +39,15 @@ def question_list(request):
 
 def question_detail(request, slug):
     question = get_object_or_404(Question, slug=slug)
-    return render(request, 'questions/question_detail.html', {'question': question})
+    answer_form = AnswerForm()
+    answers = question.answers.all().order_by('-created_at')
+    # paginator for answers
+    page = request.GET.get('page', 1)
+    paginator = Paginator(answers, 10)  # Show 10 answers per page
+    try:
+        answers = paginator.page(page)
+    except PageNotAnInteger:
+        answers = paginator.page(1)
+    except EmptyPage:
+        answers = paginator.page(paginator.num_pages)
+    return render(request, 'questions/question_detail.html', {'question': question, 'answer_form': answer_form, 'answers': answers})

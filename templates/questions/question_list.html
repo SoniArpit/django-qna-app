@@ -8,22 +8,45 @@
 {% if questions %}
 <ul>
   {% for question in questions %}
-  <li class="flex flex-col gap-2 mb-4 group">
-    <a href="{{ question.get_absolute_url }}">
-      <h2 class="text-xl group-hover:underline">{{ question.title }}</h2>
-      <p class="text-base-content/70">{{ question.body |truncatewords:30 }}</p>
+  <li
+    class="flex flex-col gap-2 mb-4 group bg-base-200 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+  >
+    <a href="{{ question.get_absolute_url }}" class="group-hover:underline">
+      <h2 class="text-xl">{{ question.title }}</h2>
+    </a>
+    <p class="text-base-content/70">{{ question.body |truncatewords:30 }}</p>
+    <div class="flex items-center gap-2 mt-1">
       <div class="flex items-center gap-2 mt-1">
         <p class="text-base-content/70">
           Asked by <b>{{ question.author.username }}</b>
         </p>
+        &bull;
         <small class="text-base-content/50"
           ><time>{{ question.created_at }}</time></small
         >
       </div>
-    </a>
+      <a
+        href="{{ question.get_absolute_url }}"
+        class="btn btn-secondary btn-outline btn-sm ml-auto"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          class="fill-current"
+        >
+          <path
+            d="M19.045 7.401c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.378-.378-.88-.586-1.414-.586s-1.036.208-1.413.585L4 13.585V18h4.413L19.045 7.401zm-3-3 1.587 1.585-1.59 1.584-1.586-1.585 1.589-1.584zM6 16v-1.585l7.04-7.018 1.586 1.586L7.587 16H6zm-2 4h16v2H4z"
+          ></path>
+        </svg>
+        Answer
+      </a>
+    </div>
   </li>
   {% endfor %}
 </ul>
-{% else %}
+
+{% include "components/pagination.html" with page=questions %} {% else %}
 <p>No questions available.</p>
 {% endif %} {%endblock%}
