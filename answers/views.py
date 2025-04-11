@@ -7,7 +7,7 @@ from .models import Answer, AnswerLike
 from django.http import JsonResponse
 
 @login_required
-def answer_question_view(request, question_id):
+def answer_question(request, question_id):
     question = Question.objects.get(id=question_id)
     
     # redirect to the question detail page after saving
@@ -45,3 +45,31 @@ def like_answer(request, answer_id):
         "like_count": answer.like_count,
         "has_liked": liked,
     })
+
+
+@login_required
+def edit_answer(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+    if request.user != answer.author:
+        return redirect('questions:question_detail', slug=answer.question.slug)
+    
+    if request.method == 'POST':
+        form = AnswerForm(request.POST, instance=answer)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.save()
+            return redirect(answer.question.get_absolute_url())
+    else:
+        form = AnswerForm(instance=answer)
+    
+    return render(request, 'answers/edit_answer.html', {'form': form, 'answer': answer})
+
+
+@login_required
+def delete_answer(request, answer_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+    if request.user == answer.author:
+        answer.delete()
+        return redirect(answer.question.get_absolute_url())
+    else:
+        return redirect('questions:question_detail', slug=answer.question.slug) 
