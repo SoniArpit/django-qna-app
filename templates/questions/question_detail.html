@@ -59,8 +59,10 @@
       <button type="submit" class="btn btn-primary">Submit Answer</button>
     </form>
     {% else %}
+    <div class="mt-4">
     <p>You must be logged in to submit an answer.</p>
-    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+    </div>
     {% endif %}
   </div>
 
